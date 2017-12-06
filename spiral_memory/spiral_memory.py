@@ -48,11 +48,57 @@ def create_spiral(upto):
     return grid
 
 
+def create_spiral_cumsum(upto):
+
+    pos = (0, 0)
+    spiral = 1
+    grid = {(0, 0): 1}
+    while True:
+        pos = (pos[0]+1, pos[1])
+        grid[pos] = get_neighbor_sum(grid, pos)
+        if grid[pos] > upto:
+            return grid[pos]
+        for i in range(0, (2*(spiral-1))+1):
+            pos = (pos[0], pos[1]+1)
+            grid[pos] = get_neighbor_sum(grid, pos)
+            if grid[pos] > upto:
+                return grid[pos]
+        for i in range(0, 2*spiral):
+            pos = (pos[0]-1, pos[1])
+            grid[pos] = get_neighbor_sum(grid, pos)
+            if grid[pos] > upto:
+                return grid[pos]
+        for i in range(0, 2*spiral):
+            pos = (pos[0], pos[1]-1)
+            grid[pos] = get_neighbor_sum(grid, pos)
+            if grid[pos] > upto:
+                return grid[pos]
+        for i in range(0, 2*spiral):
+            pos = (pos[0]+1, pos[1])
+            grid[pos] = get_neighbor_sum(grid, pos)
+            if grid[pos] > upto:
+                return grid[pos]
+        spiral += 1
+
+
+def get_neighbor_sum(grid, pos):
+
+    return grid.get((pos[0]+1, pos[1]), 0) + \
+            grid.get((pos[0], pos[1]+1), 0) + \
+            grid.get((pos[0]-1, pos[1]), 0) + \
+            grid.get((pos[0], pos[1]-1), 0) + \
+            grid.get((pos[0]+1, pos[1]+1), 0) + \
+            grid.get((pos[0]+1, pos[1]-1), 0) + \
+            grid.get((pos[0]-1, pos[1]+1), 0) + \
+            grid.get((pos[0]-1, pos[1]-1), 0)
+
+
 if __name__ == '__main__':
 
     _input_square = 361527
-    print(spiral_memory_steps(_input_square))
-    print(create_spiral(15))
+    # print(spiral_memory_steps(_input_square))
+    # print(create_spiral(15))
+    print(create_spiral_cumsum(_input_square))
 
 
 # --- Part One ---
